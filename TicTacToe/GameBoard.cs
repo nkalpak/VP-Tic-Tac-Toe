@@ -10,7 +10,7 @@ namespace TicTacToe
         private readonly string[,] _board = new string[3, 3];
         private string _currentSign = "O";
 
-        private bool IsIndexValid(int index) => index >= 0 && index < 9;
+        private static bool IsIndexValid(int index) => index >= 0 && index < 9;
 
         private bool IsBoardHorizontalWinState()
         {
@@ -32,7 +32,7 @@ namespace TicTacToe
 
             return win;
         }
-        
+
         private bool IsBoardVerticalWinState()
         {
             var win = false;
@@ -54,11 +54,39 @@ namespace TicTacToe
             return win;
         }
 
+        private bool IsBoardMainDiagonalWinState()
+        {
+            string top = _board[0, 0];
+            string mid = _board[1, 1];
+            string bottom = _board[2, 2];
+
+            if (top == null) return false;
+
+            return top == mid && mid == bottom;
+        }
+
+        private bool IsBoardSecondaryDiagonalWinState()
+        {
+            string bottom = _board[2, 0];
+            string mid = _board[1, 1];
+            string top = _board[0, 2];
+
+            if (bottom == null) return false;
+
+            return bottom == mid && mid == top;
+        }
+
         private void DetermineIfPlayerHasWon()
         {
-            if (IsBoardHorizontalWinState() || IsBoardVerticalWinState()) HasWon = true;
+            if (IsBoardMainDiagonalWinState()
+                || IsBoardSecondaryDiagonalWinState()
+                || IsBoardHorizontalWinState()
+                || IsBoardVerticalWinState())
+            {
+                HasWon = true;
+            }
         }
-        
+
         /// <summary>
         /// Method which signs the board with either X or O at the given index position.
         /// </summary>
@@ -68,7 +96,7 @@ namespace TicTacToe
         {
             if (!IsIndexValid(index)) throw new IndexOutOfRangeException("Button positions are only [0-8].");
             if (GetSignAtPosition(index) != null) return GetSignAtPosition(index);
-            
+
             int x = index % BoardSize;
             int y = index / BoardSize;
 
@@ -83,7 +111,7 @@ namespace TicTacToe
             ToggleSign();
             _board[x, y] = _currentSign;
         }
-        
+
         private string GetSignAtPosition(int index)
         {
             int x = index % BoardSize;
