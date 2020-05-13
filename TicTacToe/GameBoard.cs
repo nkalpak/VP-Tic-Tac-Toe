@@ -5,10 +5,15 @@ namespace TicTacToe
     public class GameBoard
     {
         private const int BoardSize = 3;
+        private const int LastTurn = 9;
+        
         public bool HasWon { get; private set; }
+        public bool Draw { get; private set; }
         public string WinningPlayer { get; private set; }
-        public uint Player1Wins { get; private set; } = 0;
-        public uint Player2Wins { get; private set; } = 0;
+        public uint Player1Wins { get; private set; }
+        public uint Player2Wins { get; private set; }
+
+        private byte _turnNumber;
 
         private string[,] _board = new string[3, 3];
 
@@ -28,8 +33,10 @@ namespace TicTacToe
             int x = index % BoardSize;
             int y = index / BoardSize;
 
+            _turnNumber++;
+
             SetSignOn2dBoard(x, y);
-            DetermineIfPlayerHasWon();
+            DetermineIfGameHasFinished();
 
             return _currentSign;
         }
@@ -43,6 +50,8 @@ namespace TicTacToe
             _board = new string[3, 3];
             _currentSign = "O";
             HasWon = false;
+            Draw = false;
+            _turnNumber = 0;
         }
 
         private static bool IsIndexValid(int index) => index >= 0 && index < 9;
@@ -123,7 +132,7 @@ namespace TicTacToe
             return true;
         }
 
-        private void DetermineIfPlayerHasWon()
+        private void DetermineIfGameHasFinished()
         {
             if (IsBoardMainDiagonalWinState()
                 || IsBoardSecondaryDiagonalWinState()
@@ -135,6 +144,8 @@ namespace TicTacToe
 
                 HasWon = true;
             }
+
+            if (_turnNumber >= LastTurn && !HasWon) Draw = true;
         }
 
         private void SetSignOn2dBoard(int x, int y)
