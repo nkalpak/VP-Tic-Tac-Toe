@@ -6,7 +6,7 @@ namespace TicTacToe
     {
         private const int BoardSize = 3;
         private const int LastTurn = 9;
-        
+
         public bool HasWon { get; private set; }
         public bool Draw { get; private set; }
         public string WinningPlayer { get; private set; }
@@ -55,6 +55,41 @@ namespace TicTacToe
         }
 
         private static bool IsIndexValid(int index) => index >= 0 && index < 9;
+
+        private void DetermineIfGameHasFinished()
+        {
+            if (IsBoardMainDiagonalWinState()
+                || IsBoardSecondaryDiagonalWinState()
+                || IsBoardHorizontalWinState()
+                || IsBoardVerticalWinState())
+            {
+                if (WinningPlayer == "X") Player1Wins++;
+                if (WinningPlayer == "O") Player2Wins++;
+
+                HasWon = true;
+            }
+
+            if (_turnNumber >= LastTurn && !HasWon) Draw = true;
+        }
+
+        private void SetSignOn2dBoard(int x, int y)
+        {
+            ToggleSign();
+            _board[x, y] = _currentSign;
+        }
+
+        private string GetSignAtPosition(int index)
+        {
+            int x = index % BoardSize;
+            int y = index / BoardSize;
+
+            return _board[x, y];
+        }
+
+        private void ToggleSign()
+        {
+            _currentSign = _currentSign == "X" ? "O" : "X";
+        }
 
         private bool IsBoardHorizontalWinState()
         {
@@ -130,41 +165,6 @@ namespace TicTacToe
 
             WinningPlayer = mid;
             return true;
-        }
-
-        private void DetermineIfGameHasFinished()
-        {
-            if (IsBoardMainDiagonalWinState()
-                || IsBoardSecondaryDiagonalWinState()
-                || IsBoardHorizontalWinState()
-                || IsBoardVerticalWinState())
-            {
-                if (WinningPlayer == "X") Player1Wins++;
-                if (WinningPlayer == "O") Player2Wins++;
-
-                HasWon = true;
-            }
-
-            if (_turnNumber >= LastTurn && !HasWon) Draw = true;
-        }
-
-        private void SetSignOn2dBoard(int x, int y)
-        {
-            ToggleSign();
-            _board[x, y] = _currentSign;
-        }
-
-        private string GetSignAtPosition(int index)
-        {
-            int x = index % BoardSize;
-            int y = index / BoardSize;
-
-            return _board[x, y];
-        }
-
-        private void ToggleSign()
-        {
-            _currentSign = _currentSign == "X" ? "O" : "X";
         }
     }
 }
