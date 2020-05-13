@@ -38,6 +38,7 @@
             this.GameButton7 = new System.Windows.Forms.Button();
             this.GameButton8 = new System.Windows.Forms.Button();
             this.GameButton9 = new System.Windows.Forms.Button();
+            this.WinnerDisplay = new System.Windows.Forms.TextBox();
             this.SuspendLayout();
             // 
             // GameButton1
@@ -121,11 +122,19 @@
             this.GameButton9.UseVisualStyleBackColor = true;
             this.GameButton9.Click += new System.EventHandler(this.GameButton9_Click);
             // 
+            // WinnerDisplay
+            // 
+            this.WinnerDisplay.Location = new System.Drawing.Point(174, 388);
+            this.WinnerDisplay.Name = "WinnerDisplay";
+            this.WinnerDisplay.Size = new System.Drawing.Size(100, 20);
+            this.WinnerDisplay.TabIndex = 1;
+            // 
             // Form1
             // 
             this.AutoScaleDimensions = new System.Drawing.SizeF(6F, 13F);
             this.AutoScaleMode = System.Windows.Forms.AutoScaleMode.Font;
             this.ClientSize = new System.Drawing.Size(800, 450);
+            this.Controls.Add(this.WinnerDisplay);
             this.Controls.Add(this.GameButton9);
             this.Controls.Add(this.GameButton6);
             this.Controls.Add(this.GameButton3);
@@ -138,6 +147,7 @@
             this.Name = "Form1";
             this.Text = "Tic Tac Toe";
             this.ResumeLayout(false);
+            this.PerformLayout();
         }
 
         private System.Windows.Forms.Button GameButton1;
@@ -149,6 +159,7 @@
         private System.Windows.Forms.Button GameButton7;
         private System.Windows.Forms.Button GameButton8;
         private System.Windows.Forms.Button GameButton9;
+        private System.Windows.Forms.TextBox WinnerDisplay;
 
         #endregion
     }

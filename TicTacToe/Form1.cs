@@ -1,12 +1,15 @@
 ﻿using System;
 using System.Windows.Forms;
 
+// TODO: Create checkers for win states (horizontal, vertical, primary/secondary diagonal)
+
 namespace TicTacToe
 {
     public partial class Form1 : Form
     {
-        private const int BOARD_WIDTH = 3; 
-        
+        private const int BoardSize = 3;
+        private bool HasWon;
+
         private string[,] _board = new string[3, 3];
         private string _currentSign = "X";
 
@@ -14,18 +17,60 @@ namespace TicTacToe
 
         private bool IsBoardSignedAtPosition(int index)
         {
-            int x = index % BOARD_WIDTH;
-            int y = index / BOARD_WIDTH;
+            int x = index % BoardSize;
+            int y = index / BoardSize;
 
             return _board[x, y] != null;
         }
 
+        private bool IsBoardHorizontalWinState()
+        {
+            var win = false;
+
+            for (var i = 0; i < BoardSize; i++)
+            {
+                string sign = _board[i, 0];
+                win = true;
+
+                for (var j = 1; j < BoardSize; j++)
+                {
+                    string boardSign = _board[i, j];
+                    if (boardSign == null || sign == null || !boardSign.Equals(sign)) win = false;
+                }
+
+                if (win) return win;
+            }
+
+            return win;
+        }
+        
+        private bool IsBoardVerticalWinState()
+        {
+            var win = false;
+
+            for (var i = 0; i < BoardSize; i++)
+            {
+                string sign = _board[0, i];
+                win = true;
+
+                for (var j = 1; j < BoardSize; j++)
+                {
+                    string boardSign = _board[j, i];
+                    if (boardSign == null || sign == null || !boardSign.Equals(sign)) win = false;
+                }
+
+                if (win) return win;
+            }
+
+            return win;
+        }
+        
         private void SignBoardAtPosition(int index, string sign)
         {
             if (!IsIndexValid(index)) throw new IndexOutOfRangeException("Button positions are only [0-8].");
 
-            int x = index % BOARD_WIDTH;
-            int y = index / BOARD_WIDTH;
+            int x = index % BoardSize;
+            int y = index / BoardSize;
 
             _board[x, y] = sign;
         }
@@ -42,10 +87,16 @@ namespace TicTacToe
             int buttonIndex = int.Parse(lastChar) - 1;
 
             if (IsBoardSignedAtPosition(buttonIndex)) return;
-            
+
             SignBoardAtPosition(buttonIndex, _currentSign);
+            if (IsBoardHorizontalWinState() || IsBoardVerticalWinState())
+            {
+                HasWon = true;
+                WinnerDisplay.Text = "Someone has won!";
+            }
+
             button.Text = _currentSign;
-            
+
             ToggleSign();
         }
 
@@ -68,32 +119,32 @@ namespace TicTacToe
         {
             HandleButtonSignRender(sender as Button);
         }
-        
+
         private void GameButton4_Click(object sender, EventArgs e)
         {
             HandleButtonSignRender(sender as Button);
         }
-        
+
         private void GameButton5_Click(object sender, EventArgs e)
         {
             HandleButtonSignRender(sender as Button);
         }
-        
+
         private void GameButton6_Click(object sender, EventArgs e)
         {
             HandleButtonSignRender(sender as Button);
         }
-        
+
         private void GameButton7_Click(object sender, EventArgs e)
         {
             HandleButtonSignRender(sender as Button);
         }
-        
+
         private void GameButton8_Click(object sender, EventArgs e)
         {
             HandleButtonSignRender(sender as Button);
         }
-        
+
         private void GameButton9_Click(object sender, EventArgs e)
         {
             HandleButtonSignRender(sender as Button);
