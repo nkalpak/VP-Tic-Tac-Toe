@@ -42,7 +42,7 @@
             this.Player2Wins = new System.Windows.Forms.Label();
             this.ExitGameButton = new System.Windows.Forms.Button();
             this.PlayAgainButton = new System.Windows.Forms.Button();
-            this.WinnerDisplay = new System.Windows.Forms.Label();
+            this.GameEndDisplay = new System.Windows.Forms.Label();
             this.SuspendLayout();
             // 
             // GameButton1
@@ -171,23 +171,23 @@
             this.PlayAgainButton.Visible = false;
             this.PlayAgainButton.Click += new System.EventHandler(this.PlayAgainButton_Click);
             // 
-            // WinnerDisplay
+            // GameEndDisplay
             // 
-            this.WinnerDisplay.BackColor = System.Drawing.SystemColors.Control;
-            this.WinnerDisplay.Font = new System.Drawing.Font("Microsoft Sans Serif", 14F, System.Drawing.FontStyle.Bold, System.Drawing.GraphicsUnit.Point, ((byte) (0)));
-            this.WinnerDisplay.ForeColor = System.Drawing.SystemColors.MenuHighlight;
-            this.WinnerDisplay.Location = new System.Drawing.Point(144, 51);
-            this.WinnerDisplay.Name = "WinnerDisplay";
-            this.WinnerDisplay.Size = new System.Drawing.Size(237, 40);
-            this.WinnerDisplay.TabIndex = 4;
-            this.WinnerDisplay.Visible = false;
+            this.GameEndDisplay.BackColor = System.Drawing.SystemColors.Control;
+            this.GameEndDisplay.Font = new System.Drawing.Font("Microsoft Sans Serif", 14F, System.Drawing.FontStyle.Bold, System.Drawing.GraphicsUnit.Point, ((byte) (0)));
+            this.GameEndDisplay.ForeColor = System.Drawing.SystemColors.MenuHighlight;
+            this.GameEndDisplay.Location = new System.Drawing.Point(144, 51);
+            this.GameEndDisplay.Name = "GameEndDisplay";
+            this.GameEndDisplay.Size = new System.Drawing.Size(237, 40);
+            this.GameEndDisplay.TabIndex = 4;
+            this.GameEndDisplay.Visible = false;
             // 
             // Form1
             // 
             this.AutoScaleDimensions = new System.Drawing.SizeF(6F, 13F);
             this.AutoScaleMode = System.Windows.Forms.AutoScaleMode.Font;
             this.ClientSize = new System.Drawing.Size(546, 450);
-            this.Controls.Add(this.WinnerDisplay);
+            this.Controls.Add(this.GameEndDisplay);
             this.Controls.Add(this.PlayAgainButton);
             this.Controls.Add(this.ExitGameButton);
             this.Controls.Add(this.Player2Wins);
@@ -216,10 +216,10 @@
         private System.Windows.Forms.Button GameButton7;
         private System.Windows.Forms.Button GameButton8;
         private System.Windows.Forms.Button GameButton9;
+        private System.Windows.Forms.Label GameEndDisplay;
         private System.Windows.Forms.Button PlayAgainButton;
         private System.Windows.Forms.Label Player1Wins;
         private System.Windows.Forms.Label Player2Wins;
-        private System.Windows.Forms.Label WinnerDisplay;
 
         #endregion
     }

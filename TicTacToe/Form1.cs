@@ -9,29 +9,43 @@ namespace TicTacToe
         
         private void HandleButtonSignRender(Button button)
         {
-            string buttonName = button.Name;
-            string lastChar = buttonName.Substring(buttonName.Length - 1);
-            int buttonIndex = int.Parse(lastChar) - 1;
+            // If board is currently in win state (waiting for play again or exit), don't allow any more clicks.
+            if (_gameBoard.HasWon) return;
+            
+            int buttonIndex = GetIndexFromButtonName(button.Name);
 
             string sign = _gameBoard.SignBoardAtPosition(buttonIndex);
             button.Text = sign;
 
             if (_gameBoard.HasWon) HandleWinCondition();
+            if (_gameBoard.Draw) HandleDrawCondition();
+        }
+
+        private int GetIndexFromButtonName(string name)
+        {
+            string lastChar = name.Substring(name.Length - 1);
+            int buttonIndex = int.Parse(lastChar) - 1;
+
+            return buttonIndex;
+        }
+
+        private void HandleDrawCondition()
+        {
+            SetGameControlButtons(true);
+            SetGameEndDisplay("Draw");
         }
 
         private void HandleWinCondition()
         {
-            WinnerDisplay.Visible = true;
-            WinnerDisplay.Text = $@"{_gameBoard.WinningPlayer} has won!";
-            
+            SetGameEndDisplay($@"{_gameBoard.WinningPlayer} has won!");
+
             Player1Wins.Text = GetPlayerWinsText(1, _gameBoard.Player1Wins);
             Player2Wins.Text = GetPlayerWinsText(2, _gameBoard.Player2Wins);
-
-            ExitGameButton.Visible = true;
-            PlayAgainButton.Visible = true;
+            
+            SetGameControlButtons(true);
         }
 
-        private string GetPlayerWinsText(int player, uint wins)
+        private static string GetPlayerWinsText(int player, uint wins)
         {
             return $@"Player {player}: {wins} wins.";
         }
@@ -49,6 +63,18 @@ namespace TicTacToe
             GameButton9.Text = "";
         }
 
+        private void SetGameEndDisplay(string text)
+        {
+            GameEndDisplay.Visible = true;
+            GameEndDisplay.Text = text;
+        }
+
+        private void SetGameControlButtons(bool shouldShow)
+        {
+            ExitGameButton.Visible = shouldShow;
+            PlayAgainButton.Visible = shouldShow;
+        }
+
         public Form1()
         {
             InitializeComponent();
@@ -56,9 +82,8 @@ namespace TicTacToe
         
         private void PlayAgainButton_Click(object sender, EventArgs e)
         {
-            ExitGameButton.Visible = false;
-            PlayAgainButton.Visible = false;
-            WinnerDisplay.Visible = false;
+            SetGameControlButtons(false);
+            GameEndDisplay.Visible = false;
             
             _gameBoard.ResetGameBoard();
             ResetButtons();
