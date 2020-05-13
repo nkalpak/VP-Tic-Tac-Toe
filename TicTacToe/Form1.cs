@@ -1,8 +1,6 @@
 ﻿using System;
 using System.Windows.Forms;
 
-// TODO: Create checkers for win states (horizontal, vertical, primary/secondary diagonal)
-
 namespace TicTacToe
 {
     public partial class Form1 : Form
@@ -18,17 +16,58 @@ namespace TicTacToe
             string sign = _gameBoard.SignBoardAtPosition(buttonIndex);
             button.Text = sign;
 
-            if (_gameBoard.HasWon)
-            {
-                WinnerDisplay.Text = "Someone has won!";
-            }
+            if (_gameBoard.HasWon) HandleWinCondition();
+        }
+
+        private void HandleWinCondition()
+        {
+            WinnerDisplay.Visible = true;
+            WinnerDisplay.Text = $@"{_gameBoard.WinningPlayer} has won!";
+            
+            Player1Wins.Text = GetPlayerWinsText(1, _gameBoard.Player1Wins);
+            Player2Wins.Text = GetPlayerWinsText(2, _gameBoard.Player2Wins);
+
+            ExitGameButton.Visible = true;
+            PlayAgainButton.Visible = true;
+        }
+
+        private string GetPlayerWinsText(int player, uint wins)
+        {
+            return $@"Player {player}: {wins} wins.";
+        }
+
+        private void ResetButtons()
+        {
+            GameButton1.Text = "";
+            GameButton2.Text = "";
+            GameButton3.Text = "";
+            GameButton4.Text = "";
+            GameButton5.Text = "";
+            GameButton6.Text = "";
+            GameButton7.Text = "";
+            GameButton8.Text = "";
+            GameButton9.Text = "";
         }
 
         public Form1()
         {
             InitializeComponent();
         }
-
+        
+        private void PlayAgainButton_Click(object sender, EventArgs e)
+        {
+            ExitGameButton.Visible = false;
+            PlayAgainButton.Visible = false;
+            WinnerDisplay.Visible = false;
+            
+            _gameBoard.ResetGameBoard();
+            ResetButtons();
+        }
+        
+        private void ExitGameButton_Click(object sender, EventArgs e)
+        {
+            Dispose(true);
+        }
         private void GameButton1_Click(object sender, EventArgs e)
         {
             HandleButtonSignRender(sender as Button);

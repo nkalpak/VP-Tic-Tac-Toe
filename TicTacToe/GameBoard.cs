@@ -6,9 +6,44 @@ namespace TicTacToe
     {
         private const int BoardSize = 3;
         public bool HasWon { get; private set; }
+        public string WinningPlayer { get; private set; }
+        public uint Player1Wins { get; private set; } = 0;
+        public uint Player2Wins { get; private set; } = 0;
 
-        private readonly string[,] _board = new string[3, 3];
+        private string[,] _board = new string[3, 3];
+
         private string _currentSign = "O";
+
+
+        /// <summary>
+        /// Method which signs the board with either X or O at the given index position.
+        /// </summary>
+        /// <param name="index">The 1D index position at which the 2D board should be signed.</param>
+        /// <returns>The appropriate sign which was inserted at the given position. (determined by internal logic)</returns>
+        public string SignBoardAtPosition(int index)
+        {
+            if (!IsIndexValid(index)) throw new IndexOutOfRangeException("Button positions are only [0-8].");
+            if (GetSignAtPosition(index) != null) return GetSignAtPosition(index);
+
+            int x = index % BoardSize;
+            int y = index / BoardSize;
+
+            SetSignOn2dBoard(x, y);
+            DetermineIfPlayerHasWon();
+
+            return _currentSign;
+        }
+
+        /// <summary>
+        /// Reset the internal board state to allow for a new game.
+        /// It is the caller's responsibility to reset the UI representation of the board.
+        /// </summary>
+        public void ResetGameBoard()
+        {
+            _board = new string[3, 3];
+            _currentSign = "O";
+            HasWon = false;
+        }
 
         private static bool IsIndexValid(int index) => index >= 0 && index < 9;
 
@@ -27,7 +62,11 @@ namespace TicTacToe
                     if (boardSign == null || sign == null || !boardSign.Equals(sign)) win = false;
                 }
 
-                if (win) return win;
+                if (win)
+                {
+                    WinningPlayer = sign;
+                    return win;
+                }
             }
 
             return win;
@@ -48,7 +87,11 @@ namespace TicTacToe
                     if (boardSign == null || sign == null || !boardSign.Equals(sign)) win = false;
                 }
 
-                if (win) return win;
+                if (win)
+                {
+                    WinningPlayer = sign;
+                    return win;
+                }
             }
 
             return win;
@@ -61,8 +104,10 @@ namespace TicTacToe
             string bottom = _board[2, 2];
 
             if (top == null) return false;
+            if (top != mid || mid != bottom) return false;
 
-            return top == mid && mid == bottom;
+            WinningPlayer = mid;
+            return true;
         }
 
         private bool IsBoardSecondaryDiagonalWinState()
@@ -72,8 +117,10 @@ namespace TicTacToe
             string top = _board[0, 2];
 
             if (bottom == null) return false;
+            if (bottom != mid || mid != top) return false;
 
-            return bottom == mid && mid == top;
+            WinningPlayer = mid;
+            return true;
         }
 
         private void DetermineIfPlayerHasWon()
@@ -83,27 +130,11 @@ namespace TicTacToe
                 || IsBoardHorizontalWinState()
                 || IsBoardVerticalWinState())
             {
+                if (WinningPlayer == "X") Player1Wins++;
+                if (WinningPlayer == "O") Player2Wins++;
+
                 HasWon = true;
             }
-        }
-
-        /// <summary>
-        /// Method which signs the board with either X or O at the given index position.
-        /// </summary>
-        /// <param name="index">The 1D index position at which the 2D board should be signed.</param>
-        /// <returns>The appropriate sign which was inserted at the given position. (determined by internal logic)</returns>
-        public string SignBoardAtPosition(int index)
-        {
-            if (!IsIndexValid(index)) throw new IndexOutOfRangeException("Button positions are only [0-8].");
-            if (GetSignAtPosition(index) != null) return GetSignAtPosition(index);
-
-            int x = index % BoardSize;
-            int y = index / BoardSize;
-
-            SetSignOn2dBoard(x, y);
-            DetermineIfPlayerHasWon();
-
-            return _currentSign;
         }
 
         private void SetSignOn2dBoard(int x, int y)
