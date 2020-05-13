@@ -39,6 +39,8 @@
             this.GameButton8 = new System.Windows.Forms.Button();
             this.GameButton9 = new System.Windows.Forms.Button();
             this.WinnerDisplay = new System.Windows.Forms.TextBox();
+            this.Player1Wins = new System.Windows.Forms.Label();
+            this.Player2Wins = new System.Windows.Forms.Label();
             this.SuspendLayout();
             // 
             // GameButton1
@@ -129,11 +131,27 @@
             this.WinnerDisplay.Size = new System.Drawing.Size(100, 20);
             this.WinnerDisplay.TabIndex = 1;
             // 
+            // Player1Wins
+            // 
+            this.Player1Wins.Location = new System.Drawing.Point(174, 9);
+            this.Player1Wins.Name = "Player1Wins";
+            this.Player1Wins.Size = new System.Drawing.Size(100, 23);
+            this.Player1Wins.TabIndex = 2;
+            // 
+            // Player2Wins
+            // 
+            this.Player2Wins.Location = new System.Drawing.Point(311, 9);
+            this.Player2Wins.Name = "Player2Wins";
+            this.Player2Wins.Size = new System.Drawing.Size(100, 23);
+            this.Player2Wins.TabIndex = 2;
+            // 
             // Form1
             // 
             this.AutoScaleDimensions = new System.Drawing.SizeF(6F, 13F);
             this.AutoScaleMode = System.Windows.Forms.AutoScaleMode.Font;
             this.ClientSize = new System.Drawing.Size(800, 450);
+            this.Controls.Add(this.Player2Wins);
+            this.Controls.Add(this.Player1Wins);
             this.Controls.Add(this.WinnerDisplay);
             this.Controls.Add(this.GameButton9);
             this.Controls.Add(this.GameButton6);
@@ -159,6 +177,8 @@
         private System.Windows.Forms.Button GameButton7;
         private System.Windows.Forms.Button GameButton8;
         private System.Windows.Forms.Button GameButton9;
+        private System.Windows.Forms.Label Player1Wins;
+        private System.Windows.Forms.Label Player2Wins;
         private System.Windows.Forms.TextBox WinnerDisplay;
 
         #endregion

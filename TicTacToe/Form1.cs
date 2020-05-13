@@ -18,10 +18,32 @@ namespace TicTacToe
             string sign = _gameBoard.SignBoardAtPosition(buttonIndex);
             button.Text = sign;
 
-            if (_gameBoard.HasWon)
-            {
-                WinnerDisplay.Text = "Someone has won!";
-            }
+            if (!_gameBoard.HasWon) return;
+            
+            WinnerDisplay.Text = $@"{_gameBoard.WinningPlayer} has won!";
+            
+            Player1Wins.Text = GetPlayerWinsText(1, _gameBoard.Player1Wins);
+            Player2Wins.Text = GetPlayerWinsText(2, _gameBoard.Player2Wins);
+            _gameBoard.ResetGameBoard();
+            ResetButtons();
+        }
+
+        private string GetPlayerWinsText(int player, uint wins)
+        {
+            return $@"Player {player}: {wins} wins.";
+        }
+
+        private void ResetButtons()
+        {
+            GameButton1.Text = "";
+            GameButton2.Text = "";
+            GameButton3.Text = "";
+            GameButton4.Text = "";
+            GameButton5.Text = "";
+            GameButton6.Text = "";
+            GameButton7.Text = "";
+            GameButton8.Text = "";
+            GameButton9.Text = "";
         }
 
         public Form1()

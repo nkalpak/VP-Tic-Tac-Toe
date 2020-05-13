@@ -6,8 +6,15 @@ namespace TicTacToe
     {
         private const int BoardSize = 3;
         public bool HasWon { get; private set; }
+        
+        public string WinningPlayer { get; private set; }
+        
+        public uint Player1Wins { get; private set; } = 0;
+        
+        public uint Player2Wins { get; private set; } = 0;
 
-        private readonly string[,] _board = new string[3, 3];
+        private string[,] _board = new string[3, 3];
+        
         private string _currentSign = "O";
 
         private static bool IsIndexValid(int index) => index >= 0 && index < 9;
@@ -27,7 +34,11 @@ namespace TicTacToe
                     if (boardSign == null || sign == null || !boardSign.Equals(sign)) win = false;
                 }
 
-                if (win) return win;
+                if (win)
+                {
+                    WinningPlayer = sign;
+                    return win;
+                }
             }
 
             return win;
@@ -48,7 +59,11 @@ namespace TicTacToe
                     if (boardSign == null || sign == null || !boardSign.Equals(sign)) win = false;
                 }
 
-                if (win) return win;
+                if (win)
+                {
+                    WinningPlayer = sign;
+                    return win;
+                }
             }
 
             return win;
@@ -61,8 +76,10 @@ namespace TicTacToe
             string bottom = _board[2, 2];
 
             if (top == null) return false;
-
-            return top == mid && mid == bottom;
+            if (top != mid || mid != bottom) return false;
+            
+            WinningPlayer = mid;
+            return true;
         }
 
         private bool IsBoardSecondaryDiagonalWinState()
@@ -72,8 +89,10 @@ namespace TicTacToe
             string top = _board[0, 2];
 
             if (bottom == null) return false;
-
-            return bottom == mid && mid == top;
+            if (bottom != mid || mid != top) return false;
+            
+            WinningPlayer = mid;
+            return true;
         }
 
         private void DetermineIfPlayerHasWon()
@@ -83,6 +102,9 @@ namespace TicTacToe
                 || IsBoardHorizontalWinState()
                 || IsBoardVerticalWinState())
             {
+                if (WinningPlayer == "X") Player1Wins++;
+                if (WinningPlayer == "O") Player2Wins++;
+                
                 HasWon = true;
             }
         }
@@ -104,6 +126,17 @@ namespace TicTacToe
             DetermineIfPlayerHasWon();
 
             return _currentSign;
+        }
+
+        /// <summary>
+        /// Reset the internal board state to allow for a new game.
+        /// It is the caller's responsibility to reset the UI representation of the board.
+        /// </summary>
+        public void ResetGameBoard()
+        {
+            _board = new string[3, 3];
+            _currentSign = "O";
+            HasWon = false;
         }
 
         private void SetSignOn2dBoard(int x, int y)
